@@ -54,8 +54,8 @@ All libraries are part of the standard C library (libc) — **no external depend
 
 ### Clone or Download
 ```bash
-git clone https://github.com/yourusername/image-to-ascii-converter.git
-cd image-to-ascii-converter
+git clone https://github.com/Ulugbek220907/Image-to-ASCII-two-character-art-.git
+cd Image-to-ASCII-two-character-art-
 ```
 
 ### Compile
