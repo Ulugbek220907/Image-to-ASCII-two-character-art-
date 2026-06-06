@@ -4,7 +4,7 @@
 
 ### 1. Compile
 ```bash
-gcc -o converter converter.c -Wall -Wextra -O2
+gcc -o main main.c -Wall -Wextra -O2
 ```
 
 ### 2. Prepare Image
@@ -14,7 +14,7 @@ convert photo.jpg image.ppm
 
 ### 3. Run
 ```bash
-./converter
+./main
 ```
 
 ### 4. Follow Prompts
@@ -32,8 +32,8 @@ Output: output.txt
 
 | Task | Command |
 |------|---------|
-| **Compile** | `gcc -o converter converter.c -Wall -Wextra -O2` |
-| **Run** | `./converter` |
+| **Compile** | `gcc -o main main.c -Wall -Wextra -O2` |
+| **Run** | `./main` |
 | **View output** | `cat output.txt` |
 | **Convert JPG to PPM** | `convert photo.jpg image.ppm` |
 | **Resize image** | `convert -resize 800x600 large.ppm small.ppm` |
@@ -338,168 +338,13 @@ free(img->data);
 free(img);
 ```
 
-### Common Memory Leaks
-
-```c
-// ❌ LEAK: Forgot to free
-Image *img = malloc(...);
-// ... do stuff ...
-return;  // Oops!
-
-// ✅ CORRECT: Always free
-Image *img = malloc(...);
-// ... do stuff ...
-free(img);
-return;
-
-// ❌ LEAK: Only freed struct, not data
-free(img);
-// img->data still allocated!
-
-// ✅ CORRECT: Free both
-free(img->data);
-free(img);
-```
-
----
-
-## 🔧 Compilation Flags Explained
-
-```bash
-gcc -o converter converter.c \
-    -Wall      # All warnings
-    -Wextra    # Extra warnings
-    -O2        # Optimization level 2 (fast)
-    -g         # Debug symbols (for gdb)
-    -DDEBUG    # Define DEBUG macro
-```
-
-### Optimization Levels
-
-```
--O0  No optimization (default, slow, for debugging)
--O1  Basic optimization
--O2  Recommended (good speed/size balance)
--O3  Aggressive optimization (may be slower for some tasks)
--Os  Optimize for size
-```
-
----
-
-## 🧪 Test Cases
-
-### Test 1: Simple Gradient
-```bash
-# Create simple PPM with gradient
-# Manually or use ImageMagick:
-convert -size 200x200 gradient:white-black test_gradient.ppm
-
-./converter
-# Filename: test_gradient.ppm
-# Bright: #
-# Dark: .
-# Scale: 1
-# Output: gradient.txt
-```
-
-**Expected**: Clear gradient from # to .
-
-### Test 2: Solid Color
-```bash
-convert -size 100x100 xc:gray test_gray.ppm
-
-./converter
-# Input: test_gray.ppm
-# Should show: All same character (because uniform brightness)
-```
-
-**Expected**: Entire output is one character
-
-### Test 3: Various Scales
-```bash
-# Same image with different scales
-./converter  # Scale 1, then 2, then 5, then 10
-
-# Compare file sizes:
-wc -l output_scale*.txt
-
-# Scale 1 should have ~600 lines
-# Scale 2 should have ~300 lines
-# etc.
-```
-
----
-
-## 📈 Performance Tips
-
-### Reduce File Size
-
-```bash
-# Use higher scale
-Scale: 5 or 10  # Instead of 1 or 2
-```
-
-### Faster Processing
-
-```bash
-# Resize before conversion
-convert -resize 400x300 huge.ppm small.ppm
-./converter  # Use small.ppm
-
-# Or use higher scale factor
-```
-
-### Check Performance
-
-```bash
-# Time the conversion
-time ./converter
-# Shows real, user, sys times
-```
-
-### Optimize Compilation
-
-```bash
-gcc -O3 -march=native converter.c -o converter
-# Uses aggressive optimization + CPU-specific instructions
-```
-
----
-
-## 🎓 Learning Path
-
-### Week 1: Basics
-- [ ] Read code line-by-line
-- [ ] Understand struct definitions
-- [ ] Learn pointer basics
-- [ ] Compile and run with different images
-
-### Week 2: Deep Dive
-- [ ] Understand malloc/free
-- [ ] Learn file I/O (fopen, fread, etc.)
-- [ ] Study PPM format
-- [ ] Modify character selection logic
-
-### Week 3: Enhancement
-- [ ] Add command-line arguments
-- [ ] Implement custom threshold
-- [ ] Add image resizing
-- [ ] Optimize performance
-
-### Week 4: Advanced
-- [ ] Add color support
-- [ ] Implement dithering
-- [ ] Add PNG support
-- [ ] Create GUI wrapper
 
 ---
 
 ## 🔗 Quick Links
 
-- **Main Code**: `converter.c`
+- **Main Code**: `main.c`
 - **Full Documentation**: `README.md`
-- **Code Explanation**: `EXPLANATION.md`
-- **PPM Spec**: http://netpbm.sourceforge.net/doc/ppm.html
 
 ---
 
@@ -525,27 +370,6 @@ gcc -O3 -march=native converter.c -o converter
 ### Q: How do I run without prompts?
 **A**: Not yet. Future version will have command-line argument support.
 
----
-
-## ✅ Checklist Before Submitting
-
-- [ ] Code compiles without warnings
-- [ ] All test images work
-- [ ] Memory is properly freed (no leaks)
-- [ ] Output files are created successfully
-- [ ] Error messages are helpful
-- [ ] README.md is complete
-- [ ] Code is commented
-
----
-
-## 🎯 Next Steps
-
-1. **Master the basics**: Understand every line of current code
-2. **Test thoroughly**: Try different images and parameters
-3. **Enhance**: Add features from Future Enhancements
-4. **Optimize**: Improve performance with profiling
-5. **Learn**: Use this as springboard for bigger projects
 
 ---
 
